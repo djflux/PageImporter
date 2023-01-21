@@ -20,6 +20,10 @@
  * @author James Montalvo
  */
 
+use MediaWiki\Content\ContentHandlerFactory;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\SlotRecord;
+
 class PageImporter {
 
 	/**
@@ -100,6 +104,10 @@ class PageImporter {
 				}
 
 				$filePageContent = file_get_contents( $root . "/$filePath" );
+				$pageUpdater = MediaWikiServices::getInstance()
+					->getWikiPageFactory()
+					->newFromTitle( $pageTitleText )
+					->newPageUpdater( $this->getUser() );
 
 				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
@@ -109,10 +117,16 @@ class PageImporter {
 					}
 					else {
 						$outputHandler->showOutput( "$pageTitleText changed.\n" );
-						$wikiPage->doEditContent(
-							new WikitextContent( $filePageContent ),
-							$comment
-						);
+						// $wikiPage->doEditContent(
+						//	new WikitextContent( $filePageContent ),
+						//	$comment
+						//);
+						$pageUpdater->setContent( SlotRecord::MAIN, $filePageContent );
+						$pageUpdater->saveRevision(
+							CommentStoreComment::newUnsavedComment( $comment ),
+							EDIT_INTERNAL | EDIT_MINOR | EDIT_AUTOSUMMARY
+ 						);
+
 					}
 				}
 				else {
