@@ -94,6 +94,7 @@ class PageImporter {
 
 			foreach( $pages as $pageTitleText => $filePath ) {
 
+				$newPageTitle = Title::newFromText( $pageTitleText );
 				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
@@ -106,7 +107,7 @@ class PageImporter {
 				$filePageContent = file_get_contents( $root . "/$filePath" );
 				$pageUpdater = MediaWikiServices::getInstance()
 					->getWikiPageFactory()
-					->newFromTitle( $pageTitleText )
+					->newFromTitle( $newPageTitle )
 					->newPageUpdater( $this->getUser() );
 
 				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
