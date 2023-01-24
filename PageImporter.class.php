@@ -95,7 +95,7 @@ class PageImporter {
 			foreach( $pages as $pageTitleText => $filePath ) {
 
 				$newPageTitle = Title::newFromText( $pageTitleText );
-				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
+				$wikiPage = WikiPageFactory::newFromTitle( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
 					$wikiPageText = $wikiPageContent->getNativeData();
