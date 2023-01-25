@@ -95,7 +95,7 @@ class PageImporter {
 			foreach( $pages as $pageTitleText => $filePath ) {
 
 				$newPageTitle = Title::newFromText( $pageTitleText );
-				$wikiPage = WikiPageFactory::newFromTitle( Title::newFromText( $pageTitleText ) );
+				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
 					$wikiPageText = $wikiPageContent->getNativeData();
@@ -108,7 +108,7 @@ class PageImporter {
 				$pageUpdater = MediaWikiServices::getInstance()
 					->getWikiPageFactory()
 					->newFromTitle( $newPageTitle )
-					->newPageUpdater( $this->getUser() );
+					->newPageUpdater( $wgUser );
 
 				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
@@ -122,7 +122,8 @@ class PageImporter {
 						//	new WikitextContent( $filePageContent ),
 						//	$comment
 						//);
-						$pageUpdater->setContent( SlotRecord::MAIN, $filePageContent );
+						$newTextContent = new TextContent( $filePageContent );
+						$pageUpdater->setContent( SlotRecord::MAIN, $newTextContent );
 						$pageUpdater->saveRevision(
 							CommentStoreComment::newUnsavedComment( $comment ),
 							EDIT_INTERNAL | EDIT_MINOR | EDIT_AUTOSUMMARY
