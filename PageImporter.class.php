@@ -118,12 +118,8 @@ class PageImporter {
 					}
 					else {
 						$outputHandler->showOutput( "$pageTitleText changed.\n" );
-						// $wikiPage->doEditContent(
-						//	new WikitextContent( $filePageContent ),
-						//	$comment
-						//);
-						$newTextContent = new TextContent( $filePageContent );
-						$pageUpdater->setContent( SlotRecord::MAIN, $newTextContent );
+						$newWikitextContent = new WikitextContent( $filePageContent );
+						$pageUpdater->setContent( SlotRecord::MAIN, $newWikitextContent );
 						$pageUpdater->saveRevision(
 							CommentStoreComment::newUnsavedComment( $comment ),
 							EDIT_INTERNAL | EDIT_MINOR | EDIT_AUTOSUMMARY
