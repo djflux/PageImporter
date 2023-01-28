@@ -122,7 +122,7 @@ class PageImporter {
 						//	new WikitextContent( $filePageContent ),
 						//	$comment
 						//);
-						$newTextContent = new TextContent( $filePageContent, CONTENT_MODEL_WIKITEXT );
+						$newTextContent = new TextContent( $filePageContent );
 						$pageUpdater->setContent( SlotRecord::MAIN, $newTextContent );
 						$pageUpdater->saveRevision(
 							CommentStoreComment::newUnsavedComment( $comment ),
