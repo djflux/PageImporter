@@ -99,6 +99,7 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 
 			foreach ( $pages as $pageTitleText => $filePath ) {
 
+				$newPageTitle = Title::newFromText( $pageTitleText );
 				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
